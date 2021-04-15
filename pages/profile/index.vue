@@ -6,10 +6,10 @@
         <div class="row">
 
           <div class="col-xs-12 col-md-10 offset-md-1">
-            <img src="http://i.imgur.com/Qr71crq.jpg" class="user-img" />
-            <h4>Eric Simons</h4>
+            <img :src="user.image" class="user-img" />
+            <h4>{{ user.username }}</h4>
             <p>
-              Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the Hunger Games
+              {{ user.bio }}
             </p>
             <button class="btn btn-sm btn-outline-secondary action-btn">
               <i class="ion-plus-round"></i>
@@ -87,9 +87,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { getOtherUserInfo } from '@/api/user'
 export default {
   middleware: 'authenticated',
-  name: 'UserProfile'
+  name: 'UserProfile',
+  data () {
+    return {
+      user: {},
+    }
+  },
+  created() {
+    console.log(this.$route.params.username);
+    this.getUserInfo(this.$route.params.username)
+  },
+  computed: {
+    ...mapState(['user'])
+  },
+  methods: {
+    async getUserInfo(username) {
+      const { data } = await getOtherUserInfo(username);
+      console.log(data);
+      this.user = { ...data.profile }
+    }
+  }
 }
 </script>
 
