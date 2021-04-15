@@ -28,7 +28,11 @@
                 </button>
             </fieldset>
           </form>
+          <button @click="logout()" class="btn btn-danger pull-xs-left">
+            Or click here to logout.
+          </button>
         </div>
+        
 
       </div>
     </div>
@@ -37,6 +41,9 @@
 
 <script>
 import { getUserInfo, updateUserInfo } from '@/api/user'
+// 仅在客户端加载 js-cookie 包
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   middleware: 'authenticated',
   name: 'SettingsIndex',
@@ -63,9 +70,14 @@ export default {
         const param = { user: this.user }
         updateUserInfo(param).then(res => {
           if (res.code === '200'){
-            
+            this.$router.push('/')
           }
         })
+      },
+      logout () {
+        Cookie.remove('user')
+        // this.$router.push('/login')
+        this.$router.go(0)
       }
   }
 }

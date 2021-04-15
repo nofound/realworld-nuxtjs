@@ -29,10 +29,20 @@
           <div class="articles-toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
-                <a class="nav-link active" @click="getMyArticles()">My Articles</a>
+                <a 
+                  class="nav-link"
+                  :class="{
+                    active: isActive == 'my'
+                  }"
+                 @click="getMyArticles()">My Articles</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" @click="getFavoritedArticles()">Favorited Articles</a>
+                <a 
+                  class="nav-link"
+                  :class="{
+                    active: isActive == 'myFa'
+                  }"
+                 @click="getFavoritedArticles()">Favorited Articles</a>
               </li>
             </ul>
           </div>
@@ -96,7 +106,7 @@ export default {
       page: 1,
       limit: 20,
       articles: [],
-
+      isActive: 'my'
     }
   },
   created() {
@@ -115,6 +125,7 @@ export default {
         offset: (page - 1) * limit,
         author: user.username
       });
+      this.isActive = 'my'
       this.articles = data.articles
     },
     async getFavoritedArticles() {
@@ -124,6 +135,7 @@ export default {
         offset: (page - 1) * limit,
         favorited: user.username
       });
+      this.isActive = 'myFa'
       this.articles = data.articles
     },
     async onFavorite (article) {
