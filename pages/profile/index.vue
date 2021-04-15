@@ -29,10 +29,10 @@
           <div class="articles-toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
-                <a class="nav-link active" href="">My Articles</a>
+                <a class="nav-link active" @click="getMyArticles()">My Articles</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Favorited Articles</a>
+                <a class="nav-link" @click="getFavoritedArticles()">Favorited Articles</a>
               </li>
             </ul>
           </div>
@@ -87,28 +87,44 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { getOtherUserInfo } from '@/api/user'
+import { getArticles } from '@/api/article'
 export default {
   middleware: 'authenticated',
   name: 'UserProfile',
   data () {
     return {
       user: {},
+      page: 1,
+      limit: 20,
     }
   },
   created() {
-    console.log(this.$route.params.username);
     this.getUserInfo(this.$route.params.username)
-  },
-  computed: {
-    ...mapState(['user'])
   },
   methods: {
     async getUserInfo(username) {
       const { data } = await getOtherUserInfo(username);
-      console.log(data);
       this.user = { ...data.profile }
+      this.getMyArticles()
+    },
+    async getMyArticles() {
+      const { limit, page, user } = this
+      const { data } = await getArticles({
+        limit,
+        offset: (page - 1) * limit,
+        author: user.username
+      });
+      console.log(data);
+    },
+    async getFavoritedArticles() {
+      const { limit, page, user } = this
+      const { data } = await getArticles({
+        limit,
+        offset: (page - 1) * limit,
+        favorited: user.username
+      });
+      console.log(data);
     }
   }
 }
