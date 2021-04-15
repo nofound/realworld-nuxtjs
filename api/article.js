@@ -53,3 +53,22 @@ export const getComments = slug => {
     url: `/api/articles/${slug}/comments`
   })
 }
+
+// 创建文章
+// /api/articles  post
+// {
+//   "article": {
+//     "title": "How to train your dragon",
+//     "description": "Ever wonder how?",
+//     "body": "You have to believe",
+//     "tagList": ["reactjs", "angularjs", "dragons"]
+//   }
+// }
+
+// 更新文章
+// /api/articles/:slug put
+// {
+//   "article": {
+//     "title": "Did you train your dragon?"
+//   }
+// }
