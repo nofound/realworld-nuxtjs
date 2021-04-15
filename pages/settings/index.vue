@@ -76,7 +76,6 @@ export default {
       },
       logout () {
         Cookie.remove('user')
-        // this.$router.push('/login')
         this.$router.go(0)
       }
   }
