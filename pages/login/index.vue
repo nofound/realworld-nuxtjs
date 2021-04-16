@@ -61,8 +61,8 @@ export default {
     return {
       user: {
         username: '',
-        email: '1099079410@qq.com',
-        password: '12345678'
+        email: '',
+        password: ''
       },
       errors: {} // 错误信息
     }
